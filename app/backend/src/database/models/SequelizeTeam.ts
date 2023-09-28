@@ -7,12 +7,13 @@ import {
 } from 'sequelize';
 import db from '.';
 
-class TeamsModel extends Model<InferAttributes<TeamsModel>, InferCreationAttributes<TeamsModel>> {
+class SequelizeTeam extends Model<InferAttributes<SequelizeTeam>,
+InferCreationAttributes<SequelizeTeam>> {
   declare id: CreationOptional<number>;
   declare teamName: string;
 }
 
-TeamsModel.init({
+SequelizeTeam.init({
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -25,8 +26,9 @@ TeamsModel.init({
     field: 'team_name',
   },
 }, {
-  sequelize: db,
-  modelName: 'TeamsModel',
+  sequelize: db, // estancia do sequelize para conexão com o banco
+  modelName: 'SequelizeTeam',
+  tableName: 'teams',
   timestamps: false,
   underscored: true,
 });
