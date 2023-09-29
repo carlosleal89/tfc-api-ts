@@ -23,9 +23,6 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
-  }
-
-  private router(): void {
     this.app.use(router);
   }
 

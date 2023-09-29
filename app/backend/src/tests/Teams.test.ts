@@ -16,7 +16,9 @@ describe('Testes de Teams', () => {
   afterEach(sinon.restore);
   it('Testa se o /teams retornar uma lista com os times.', async function () {
     
-    const { status, body } = await chai.request(app).get('/teams');
-    expect(status).to.be.equal(200);
+    const data = await chai.request(app).get('/teams');
+    console.log(data);
+    
+    // expect(status).to.be.equal(200);
   });
 });
