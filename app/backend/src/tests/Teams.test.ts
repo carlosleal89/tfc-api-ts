@@ -8,17 +8,30 @@ import Example from '../database/models/ExampleModel';
 
 import { Response } from 'superagent';
 
+import { team, teams } from '../mocks/Teams.mock';
+import SequelizeTeam from '../database/models/SequelizeTeam';
+
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
 describe('Testes de Teams', () => {
   afterEach(sinon.restore);
-  it('Testa se o /teams retornar uma lista com os times.', async function () {
+  it('Testa se o /teams retorna uma lista com os times.', async function () {
+    sinon.stub(SequelizeTeam, 'findAll').resolves(teams as any);
     
-    const data = await chai.request(app).get('/teams');
-    console.log(data);
+    const { body, status } = await chai.request(app).get('/teams');       
     
-    // expect(status).to.be.equal(200);
+    expect(status).to.be.equal(200);
+    expect(body).to.deep.equal(teams);
+  });
+
+  it('Testa se o /teams:id retorna o time esperado.', async function () {
+    sinon.stub(SequelizeTeam, 'findOne').resolves(team as any);
+    
+    const { body, status } = await chai.request(app).get('/teams/1');       
+    
+    expect(status).to.be.equal(200);
+    expect(body).to.deep.equal(team);
   });
 });
