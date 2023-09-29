@@ -34,4 +34,17 @@ describe('Testes de Teams', () => {
     expect(status).to.be.equal(200);
     expect(body).to.deep.equal(team);
   });
+
+  it('Testa se o /teams:id retorna a mensagem esperado ao não encontrar um id.', async function () {
+    sinon.stub(SequelizeTeam, 'findOne').resolves(null as any);
+
+    const errorMsg = {
+      "message": "Team not found"
+    }
+
+    const { body, status } = await chai.request(app).get('/teams/66');       
+    
+    expect(status).to.be.equal(404);
+    expect(body).to.deep.equal(errorMsg);
+  });
 });
