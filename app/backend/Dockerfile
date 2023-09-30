@@ -24,6 +24,8 @@ EXPOSE 3001
 
 # Configurar os comandos para iniciar a aplicação
 
+ENV JWT_SECRET=jwt_secret
+
 ENTRYPOINT [ "npm", "run" ]
 
 CMD [ "start" ]

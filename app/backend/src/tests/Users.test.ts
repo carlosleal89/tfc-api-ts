@@ -8,7 +8,8 @@ import Example from '../database/models/ExampleModel';
 
 import { Response } from 'superagent';
 
-// import { team, teams } from '../mocks/Teams.mock';
+import token from '../mocks/Users.mock';
+
 import SequelizeUsers from '../database/models/SequelizeUsers';
 
 chai.use(chaiHttp);
@@ -18,26 +19,47 @@ const { expect } = chai;
 describe('Testes de Users', () => {
   afterEach(sinon.restore);
   it('Testa se o endpoint /login faz login com sucesso.', async function () {
-    // sinon.stub(SequelizeUsers, 'findAll').resolves(teams as any);
+    const body = {
+      email: 'user@user.com',
+      password: 'secret_user',
+    }
+
+    const response = await chai.request(app).post('/login').send(body);       
     
-    const { body, status } = await chai.request(app).get('/login');       
-    
-    expect(status).to.be.equal(200);    
+    expect(response.status).to.be.equal(200);    
   });
 
-  it('Testa se o endpoint /login retorna as mensagens de erro esperadas ao não informar email ou senha.', async function () {
-    // sinon.stub(SequelizeUsers, 'findOne').resolves(team as any);
+  it('Testa se o endpoint /login retorna a mensagen de erro esperada ao informar email ou senha invalidos.', async function () {
+    const bodyInvalidEmail = {
+      email: '@user.com',
+      password: 'secret_user',
+    }
+
+    const errorMsg = {
+      "message": "Invalid email or password"
+    };
+
+    const res = await chai.request(app).post('/login').send(bodyInvalidEmail);       
     
-    const { body, status } = await chai.request(app).get('/login');       
-    
-    expect(status).to.be.equal(400);
+    expect(res.status).to.be.equal(401);
+    expect(res.body).to.be.deep.equal(errorMsg);
   });
 
-  it('Testa se o endpoint /login retorna as mensagens de erro esperadas informar email ou senha invalido.', async function () {
-    // sinon.stub(SequelizeUsers, 'findOne').resolves(team as any);
+  it('Testa se o endpoint /login retorna a mensagen de erro esperada ao informar um email inexistente.', async function () {
+    sinon.stub(SequelizeUsers, 'findOne').resolves(null as any);
+
+    const bodyInvalidEmail = {
+      email: 'jill.valentine@user.com',
+      password: 'nemesis',
+    }
+
+    const errorMsg = {
+      "message": "Invalid email or password"
+    }
     
-    const { body, status } = await chai.request(app).get('/login');       
+    const { body, status } = await chai.request(app).post('/login').send(bodyInvalidEmail);       
     
     expect(status).to.be.equal(401);
+    expect(body).to.deep.equal(errorMsg);
   });
 });
