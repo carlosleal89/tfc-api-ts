@@ -6,7 +6,7 @@ class Validations {
     const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
     const isValidEmail = emailRegex.test(email);
 
-    if (!email || typeof email !== 'string' || !isValidEmail) {
+    if (!email || typeof email !== 'string') {
       return res.status(400).json({
         message: 'All fields must be filled',
       });
@@ -16,7 +16,7 @@ class Validations {
       return res.status(400).json({ message: 'All fields must be filled' });
     }
 
-    if (password.length < 6) {
+    if (!isValidEmail || password.length < 6) {
       return res.status(401).json({
         message: 'Invalid email or password',
       });
