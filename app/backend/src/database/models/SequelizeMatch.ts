@@ -6,7 +6,7 @@ import {
   CreationOptional,
 } from 'sequelize';
 import db from '.';
-// import SequelizeTeam from './SequelizeTeam';
+import SequelizeTeam from './SequelizeTeam';
 
 export default class SequelizeMatches extends Model<InferAttributes<SequelizeMatches>,
 InferCreationAttributes<SequelizeMatches>> {
@@ -29,12 +29,12 @@ SequelizeMatches.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     field: 'home_team_id',
-    // references: {
-    //   model: 'teams',
-    //   key: 'id',
-    // },
-    // onDelete: 'CASCADE',
-    // onUpdate: 'CASCADE',
+    references: {
+      model: 'teams',
+      key: 'id',
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
   homeTeamGoals: {
     type: DataTypes.STRING,
@@ -45,12 +45,12 @@ SequelizeMatches.init({
     type: DataTypes.STRING,
     allowNull: false,
     field: 'away_team_id',
-    // references: {
-    //   model: 'teams',
-    //   key: 'id',
-    // },
-    // onDelete: 'CASCADE',
-    // onUpdate: 'CASCADE',
+    references: {
+      model: 'teams',
+      key: 'id',
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
   awayTeamGoals: {
     type: DataTypes.STRING,
@@ -70,22 +70,22 @@ SequelizeMatches.init({
   underscored: true,
 });
 
-// SequelizeTeam.hasMany(SequelizeMatches, {
-//   foreignKey: 'homeTeamId',
-//   as: 'homeMatches',
-// });
+SequelizeTeam.hasMany(SequelizeMatches, {
+  foreignKey: 'homeTeamId',
+  as: 'homeMatches',
+});
 
-// SequelizeTeam.hasMany(SequelizeMatches, {
-//   foreignKey: 'awayTeamId',
-//   as: 'awayHomeMatches',
-// });
+SequelizeTeam.hasMany(SequelizeMatches, {
+  foreignKey: 'awayTeamId',
+  as: 'awayHomeMatches',
+});
 
-// SequelizeMatches.belongsTo(SequelizeTeam, {
-//   foreignKey: 'homeTeamId',
-//   as: 'homeTeam',
-// });
+SequelizeMatches.belongsTo(SequelizeTeam, {
+  foreignKey: 'homeTeamId',
+  as: 'homeTeam',
+});
 
-// SequelizeMatches.belongsTo(SequelizeTeam, {
-//   foreignKey: 'awayTeamId',
-//   as: 'awayTeam',
-// });
+SequelizeMatches.belongsTo(SequelizeTeam, {
+  foreignKey: 'awayTeamId',
+  as: 'awayTeam',
+});

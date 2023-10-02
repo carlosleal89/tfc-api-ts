@@ -1,5 +1,5 @@
 import { Model, QueryInterface, DataTypes } from 'sequelize';
-import IMatch from '../../Interfaces/Matches/IMatch';
+import { IMatch } from '../../Interfaces/Matches/IMatch';
 
 export default {
   up (queryInterface: QueryInterface) {
@@ -14,10 +14,10 @@ export default {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: 'home_team_id',
-        // references: {
-        //   model: 'SequelizeTeam',
-        //   key: 'id',
-        // },
+        references: {
+          model: 'teams', // aqui faz referencia ao nome da tabela, não ao nome do modelo
+          key: 'id',
+        },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
@@ -30,10 +30,10 @@ export default {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: 'away_team_id',
-        // references: {
-        //   model: 'SequelizeTeam',
-        //   key: 'id',
-        // },
+        references: {
+          model: 'teams',
+          key: 'id',
+        },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
