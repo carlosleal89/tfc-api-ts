@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
+import * as jwt from 'jsonwebtoken';
+import envArgs from '../utils/envArgs';
 
 class Validations {
   static validateLogin = (req: Request, res: Response, next: NextFunction): Response | void => {
@@ -23,6 +25,29 @@ class Validations {
     }
 
     next();
+  };
+
+  static validateToken = (req: Request, res: Response, next: NextFunction): Response | void => {
+    const tokenBearer = req.headers.authorization;
+
+    if (!tokenBearer) {
+      return res.status(401).json({
+        message: 'Token not found',
+      });
+    }
+
+    const token = tokenBearer.split(' ')[1];
+    jwt.verify(token, envArgs.jwtSecret, (err, user) => {
+      if (err) {
+        return res.status(401).json({
+          message: 'Token must be a valid token',
+        });
+      }
+      if (user) {
+        return res.status(200).json({ role: user.role });
+      }
+      next(user);
+    });
   };
 }
 
