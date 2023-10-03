@@ -27,4 +27,11 @@ export default class MatchService {
       message: 'Finished',
     };
   }
+
+  public async updateMatchById(id: number, goals: Record<string, number>): Promise<finishedMsg> {
+    await this.matchModel.updateMatchById(id, goals);
+    return {
+      message: 'Updated',
+    };
+  }
 }

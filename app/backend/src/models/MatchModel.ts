@@ -39,4 +39,18 @@ export default class MatchModel implements IMatchModel {
       message: 'Finished',
     };
   }
+
+  async updateMatchById(id: number, goals: Record<string, number>): Promise<finishedMsg> {
+    await this.model.update({
+      homeTeamGoals: goals.homeTeamGoals,
+      awayTeamGoals: goals.awayTeamGoals,
+    }, {
+      where: {
+        id,
+      },
+    });
+    return {
+      message: 'Updated',
+    };
+  }
 }

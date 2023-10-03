@@ -19,10 +19,18 @@ export default class MatchController {
 
   public async finishMatchById(req: Request, res: Response) {
     const { id } = req.params;
-    if (!id) {
-      return res.status(mapStatusHTTP('NOT_FOUND')).json({ message: 'ID not found.' });
-    }
+    // if (!id) {
+    //   return res.status(mapStatusHTTP('NOT_FOUND')).json({ message: 'ID not found.' });
+    // }
     const ServiceResponse = await this.matchService.finishMatchById(Number(id));
+    return res.status(mapStatusHTTP('SUCCESSFUL')).json(ServiceResponse);
+  }
+
+  public async updateMatchById(req: Request, res: Response) {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+    const ServiceResponse = await this.matchService
+      .updateMatchById(Number(id), { homeTeamGoals, awayTeamGoals });
     return res.status(mapStatusHTTP('SUCCESSFUL')).json(ServiceResponse);
   }
 }
