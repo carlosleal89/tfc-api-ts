@@ -12,4 +12,13 @@ export default class MatchService {
     const allMatches = await this.matchModel.getAllMatches();
     return { status: 'SUCCESSFUL', data: allMatches };
   }
+
+  public async getMatchesByStatus(value: boolean): Promise<ServiceResponse<IMatch[]>> {
+    console.log('service', value);
+    const allMatches = await this.matchModel.getMatchesByStatus(value);
+    if (!allMatches) {
+      return { status: 'NOT_FOUND', data: { message: 'No matches found' } };
+    }
+    return { status: 'SUCCESSFUL', data: allMatches };
+  }
 }
