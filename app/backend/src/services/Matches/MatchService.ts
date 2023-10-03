@@ -23,7 +23,6 @@ export default class MatchService {
 
   public async finishMatchById(id: number): Promise<finishedMsg> {
     await this.matchModel.finishMatchById(id);
-    // console.log('SERVICE', finishedMatch);
     return {
       message: 'Finished',
     };

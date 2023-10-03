@@ -29,13 +29,12 @@ export default class MatchModel implements IMatchModel {
     return dbData;
   }
 
-  async finishMatchById(id: number): Promise<finishedMsg | IMatch> {
+  async finishMatchById(id: number): Promise<finishedMsg> {
     await this.model.update({ inProgress: false }, {
       where: {
         id,
       },
     });
-    // console.log('dbData MODEL', dbData);
     return {
       message: 'Finished',
     };

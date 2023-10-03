@@ -19,12 +19,10 @@ export default class MatchController {
 
   public async finishMatchById(req: Request, res: Response) {
     const { id } = req.params;
-    console.log('CONTROLLER', id);
     if (!id) {
       return res.status(mapStatusHTTP('NOT_FOUND')).json({ message: 'ID not found.' });
     }
     const ServiceResponse = await this.matchService.finishMatchById(Number(id));
-    console.log('CONTROLLER', ServiceResponse);
     return res.status(mapStatusHTTP('SUCCESSFUL')).json(ServiceResponse);
   }
 }

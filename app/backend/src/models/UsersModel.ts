@@ -19,7 +19,6 @@ export default class UsersModel implements IUserModel {
 
   async getRole(email: string): Promise<roleMsg<string> | null> {
     const user = await this.findByEmail(email);
-    console.log('MODEL', user);
 
     if (!user) return null;
 
