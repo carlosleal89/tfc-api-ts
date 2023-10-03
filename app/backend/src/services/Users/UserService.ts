@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { ServiceResponse } from '../../Interfaces/ServiceResponse';
+import { ServiceResponse, roleMsg } from '../../Interfaces/ServiceResponse';
 // import { IUsers } from '../../Interfaces/Users/IUsers';
 import UsersModel from '../../models/UsersModel';
 import { IUserModel } from '../../Interfaces/Users/IUsersModel';
@@ -33,5 +33,14 @@ export default class UserService {
     });
 
     return { status: 'SUCCESSFUL', data: { token } };
+  }
+
+  public async getRole(email: string): Promise<roleMsg<{ role: string }>> {
+    const userRole = await this.usersModel.getRole(email);
+    console.log('SERVICE', userRole);
+    if (userRole) {
+      return { status: 'SUCCESSFUL', role: userRole };
+    }
+    return { status: 'NOT_FOUND', role: 'User not found' };
   }
 }

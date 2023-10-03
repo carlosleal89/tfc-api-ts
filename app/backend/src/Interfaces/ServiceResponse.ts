@@ -12,4 +12,9 @@ export type ServiceResponseSucess<T> = {
   data: T
 };
 
+export type roleMsg<M> = {
+  status?: 'SUCCESSFUL' | 'NOT_FOUND',
+  role: M | string,
+};
+
 export type ServiceResponse<T> = ServiceResponseError | ServiceResponseSucess<T>;

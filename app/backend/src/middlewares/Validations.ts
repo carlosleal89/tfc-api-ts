@@ -43,10 +43,8 @@ class Validations {
           message: 'Token must be a valid token',
         });
       }
-      if (user) {
-        return res.status(200).json({ role: user.role });
-      }
-      next(user);
+      res.locals.user = user;
+      next();
     });
   };
 }

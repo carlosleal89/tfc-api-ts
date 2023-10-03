@@ -1,4 +1,4 @@
-import { IMatchModel } from '../Interfaces/Matches/IMatchModel';
+import { IMatchModel, finishedMsg } from '../Interfaces/Matches/IMatchModel';
 import { IMatch } from '../Interfaces/Matches/IMatch';
 import SequelizeMatches from '../database/models/SequelizeMatch';
 import SequelizeTeam from '../database/models/SequelizeTeam';
@@ -17,7 +17,6 @@ export default class MatchModel implements IMatchModel {
   }
 
   async getMatchesByStatus(value: boolean): Promise<IMatch[]> {
-    console.log('model', value);
     const dbData = await this.model.findAll({
       where: {
         inProgress: [value],
@@ -28,5 +27,17 @@ export default class MatchModel implements IMatchModel {
       ],
     });
     return dbData;
+  }
+
+  async finishMatchById(id: number): Promise<finishedMsg | IMatch> {
+    const dbData = await this.model.update({ inProgress: false }, {
+      where: {
+        id,
+      },
+    });
+    console.log('dbData MODEL', dbData);
+    return {
+      message: 'Finished',
+    };
   }
 }
