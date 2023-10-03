@@ -30,12 +30,12 @@ export default class MatchModel implements IMatchModel {
   }
 
   async finishMatchById(id: number): Promise<finishedMsg | IMatch> {
-    const dbData = await this.model.update({ inProgress: false }, {
+    await this.model.update({ inProgress: false }, {
       where: {
         id,
       },
     });
-    console.log('dbData MODEL', dbData);
+    // console.log('dbData MODEL', dbData);
     return {
       message: 'Finished',
     };

@@ -22,8 +22,8 @@ export default class MatchService {
   }
 
   public async finishMatchById(id: number): Promise<finishedMsg> {
-    const finishedMatch = await this.matchModel.finishMatchById(id);
-    console.log('SERVICE', finishedMatch);
+    await this.matchModel.finishMatchById(id);
+    // console.log('SERVICE', finishedMatch);
     return {
       message: 'Finished',
     };
