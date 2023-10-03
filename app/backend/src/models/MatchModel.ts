@@ -53,4 +53,12 @@ export default class MatchModel implements IMatchModel {
       message: 'Updated',
     };
   }
+
+  async createMatch(match: Record<string, number>): Promise<IMatch> {
+    const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = match;
+    const dbData = await this.model
+      .create({ homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals, inProgress: true });
+    console.log(dbData);
+    return dbData;
+  }
 }

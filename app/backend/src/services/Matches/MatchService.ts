@@ -34,4 +34,9 @@ export default class MatchService {
       message: 'Updated',
     };
   }
+
+  public async createMatch(match: Record<string, number>): Promise<ServiceResponse<IMatch>> {
+    const newMatch = await this.matchModel.createMatch(match);
+    return { status: 'CREATED', data: newMatch };
+  }
 }

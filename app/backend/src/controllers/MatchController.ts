@@ -33,4 +33,12 @@ export default class MatchController {
       .updateMatchById(Number(id), { homeTeamGoals, awayTeamGoals });
     return res.status(mapStatusHTTP('SUCCESSFUL')).json(ServiceResponse);
   }
+
+  public async createMatch(req: Request, res: Response) {
+    const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = req.body;
+    console.log('CONTROLLER', homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals);
+    const ServiceResponse = await this.matchService
+      .createMatch({ homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals });
+    return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
+  }
 }
