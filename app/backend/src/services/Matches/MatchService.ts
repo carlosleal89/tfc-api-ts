@@ -2,10 +2,13 @@ import { ServiceResponse } from '../../Interfaces/ServiceResponse';
 import { IMatchModel, finishedMsg } from '../../Interfaces/Matches/IMatchModel';
 import { IMatch } from '../../Interfaces/Matches/IMatch';
 import MatchModel from '../../models/MatchModel';
+import TeamsModel from '../../models/TeamsModel';
+import { ITeamModel } from '../../Interfaces/Teams/ITeamsModel';
 
 export default class MatchService {
   constructor(
     private matchModel: IMatchModel = new MatchModel(),
+    private teamModel: ITeamModel = new TeamsModel(),
   ) { }
 
   public async getAllMatches(): Promise<ServiceResponse<IMatch[]>> {
@@ -36,6 +39,11 @@ export default class MatchService {
   }
 
   public async createMatch(match: Record<string, number>): Promise<ServiceResponse<IMatch>> {
+    const isHomeTeam = await this.teamModel.findById(Number(match.homeTeamId));
+    const isAwayTeam = await this.teamModel.findById(Number(match.awayTeamId));
+    if (!isHomeTeam || !isAwayTeam) {
+      return { status: 'NOT_FOUND', data: { message: 'There is no team with such id!' } };
+    }
     const newMatch = await this.matchModel.createMatch(match);
     return { status: 'CREATED', data: newMatch };
   }
