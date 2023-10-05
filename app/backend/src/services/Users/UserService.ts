@@ -37,7 +37,6 @@ export default class UserService {
 
   public async getRole(email: string): Promise<roleMsg<{ role: string }>> {
     const userRole = await this.usersModel.getRole(email);
-    console.log('SERVICE', userRole);
     if (userRole) {
       return { status: 'SUCCESSFUL', role: userRole };
     }

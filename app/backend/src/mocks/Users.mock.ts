@@ -4,4 +4,10 @@ const token = {
   UmNHkjbh8sMYk1OouwPBPeUY5-89Fgk4-I2n5S8yhmg`,
 };
 
-export default token;
+const jwtPayload = {
+  id: 1,
+  role: 'admin',
+  email: 'admin@admin.com',
+};
+
+export { token, jwtPayload };
