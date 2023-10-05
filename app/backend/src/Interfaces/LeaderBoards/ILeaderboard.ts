@@ -1,10 +1,10 @@
 export type ILeaderboard = {
   name: string,
-  totalPoints: number,
+  totalPoints?: number,
   totalGames: number,
   totalVictories: number,
   totalDraws: number,
   totalLosses: number,
   goalsFavor: number,
-  goalsOwn: 1,
+  goalsOwn: number,
 };
