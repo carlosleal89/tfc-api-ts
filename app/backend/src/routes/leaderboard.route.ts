@@ -5,6 +5,9 @@ const router = Router();
 
 const leaderboardController = new LeaderBoardController();
 
-router.get('/home', (req: Request, res: Response) => leaderboardController.leaderBoards(req, res));
+router.get('/:teamType', (req: Request, res: Response) => leaderboardController
+  .leaderBoards(req, res));
+
+// router.get('/away', (req: Request, res: Response) => leaderboardController.leaderBoards(req, res));
 
 export default router;

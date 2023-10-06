@@ -3,7 +3,25 @@ import { IMatch } from '../Interfaces/Matches/IMatch';
 
 const leaderboard: { [key: string]: ILeaderboard } = {};
 
-function verifyTeamName(teamName: string, matchEl: IMatch): void {
+function calculateTotalPoints(victories: number, draws: number) {
+  return (victories * 3) + draws;
+}
+
+function sortLeaderboardItens(el: ILeaderboard[]): ILeaderboard[] {
+  const sortedItens = el.map((teamEl) => ({
+    name: teamEl.name,
+    totalPoints: teamEl.totalPoints,
+    totalGames: teamEl.totalGames,
+    totalVictories: teamEl.totalVictories,
+    totalDraws: teamEl.totalDraws,
+    totalLosses: teamEl.totalLosses,
+    goalsFavor: teamEl.goalsFavor,
+    goalsOwn: teamEl.goalsOwn,
+  }));
+  return sortedItens;
+}
+
+function verifyHomeTeamName(teamName: string, matchEl: IMatch): void {
   const isTeam = leaderboard[teamName];
   if (!isTeam) {
     leaderboard[teamName] = {
@@ -18,11 +36,22 @@ function verifyTeamName(teamName: string, matchEl: IMatch): void {
   }
 }
 
-function calculateTotalPoints(victories: number, draws: number) {
-  return (victories * 3) + draws;
+function verifyAwayTeamName(teamName: string, matchEl: IMatch): void {
+  const isTeam = leaderboard[teamName];
+  if (!isTeam) {
+    leaderboard[teamName] = {
+      name: teamName,
+      totalGames: 1,
+      goalsFavor: matchEl.awayTeamGoals,
+      totalVictories: matchEl.awayTeamGoals > matchEl.homeTeamGoals ? 1 : 0,
+      totalDraws: matchEl.awayTeamGoals === matchEl.homeTeamGoals ? 1 : 0,
+      totalLosses: matchEl.awayTeamGoals < matchEl.homeTeamGoals ? 1 : 0,
+      goalsOwn: matchEl.homeTeamGoals,
+    };
+  }
 }
 
-export default function leaderboardCalc(matchesArray: IMatch[]) {
+export function leaderboardHomeCalc(matchesArray: IMatch[]) {
   matchesArray.forEach((matchEl: IMatch) => {
     const teamName = matchEl.homeTeam?.teamName || 'Unknown';
     if (leaderboard[teamName]) {
@@ -35,8 +64,27 @@ export default function leaderboardCalc(matchesArray: IMatch[]) {
       leaderboard[teamName]
         .totalPoints = calculateTotalPoints(leaderboard[teamName]
           .totalVictories, leaderboard[teamName].totalDraws);
-    } else verifyTeamName(teamName, matchEl);
+    } else verifyHomeTeamName(teamName, matchEl);
   });
   const leaderboardArray: ILeaderboard[] = Object.values(leaderboard);
-  return leaderboardArray;
+  return sortLeaderboardItens(leaderboardArray);
+}
+
+export function leaderboardAwayCalc(matchesArray: IMatch[]) {
+  matchesArray.forEach((matchEl: IMatch) => {
+    const teamName = matchEl.awayTeam?.teamName || 'Unknown';
+    if (leaderboard[teamName]) {
+      leaderboard[teamName].totalGames += 1;
+      leaderboard[teamName].goalsFavor += matchEl.awayTeamGoals;
+      leaderboard[teamName].totalVictories += matchEl.awayTeamGoals > matchEl.homeTeamGoals ? 1 : 0;
+      leaderboard[teamName].totalDraws += matchEl.awayTeamGoals === matchEl.homeTeamGoals ? 1 : 0;
+      leaderboard[teamName].totalLosses += matchEl.awayTeamGoals < matchEl.homeTeamGoals ? 1 : 0;
+      leaderboard[teamName].goalsOwn += matchEl.homeTeamGoals;
+      leaderboard[teamName]
+        .totalPoints = calculateTotalPoints(leaderboard[teamName]
+          .totalVictories, leaderboard[teamName].totalDraws);
+    } else verifyAwayTeamName(teamName, matchEl);
+  });
+  const leaderboardArray: ILeaderboard[] = Object.values(leaderboard);
+  return sortLeaderboardItens(leaderboardArray);
 }

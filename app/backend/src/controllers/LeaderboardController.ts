@@ -8,7 +8,8 @@ export default class LeaderBoardController {
   ) { }
 
   public async leaderBoards(req: Request, res: Response) {
-    const ServiceResponse = await this.leaderboardService.leaderBoards();
+    const { teamType } = req.params;
+    const ServiceResponse = await this.leaderboardService.leaderBoards(teamType);
     return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
   }
 }
